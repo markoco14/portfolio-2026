@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Mark O'Connor</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
+    <style>
+
+        :root {
+            --container-lg: 1200px;
+
+            --bg-blue: #0ca3d2;
+            --bg-black: black;
+            --bg-gray: #cccccc;
+
+            --btn-gray: #cccccc;
+            --btn-gray-hover: #d8d4d4;
+            --btn-gray-pressed: #a5a4a4;
+
+            --link-default: #21339c;
+            --link-visited: #5d219c;
+            --link-hover: #2f48d8;
+            --link-pressed: #16236f;
+
+            --space-sm: 0.25rem;
+            --space-md: 0.5rem;
+            --space-lg: 1rem;
+
+            --radius-md: 0.5rem;
+
+            --gap-lg: 1rem;
+            
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            overflow-y: scroll;
+        }
+
+        a {
+            color: var(--link-default);
+        }
+        a:hover {
+            color: var(--link-hover);
+        }
+
+        a:active {
+            color: var(--link-pressed);
+        }
+
+        a:visited {
+            color: purple;
+        }
+
+        .header {
+            padding-inline: var(--space-lg);
+            color: white;
+            background-color: var(--bg-blue );
+        }
+
+        .header .container {
+            height: 3rem;
+            max-width: var(--container-lg);
+            margin-inline: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header .details {
+            display: flex;
+            align-items: center;
+            gap: var(--gap-lg)
+        }
+
+        .msgbox {
+            color: white;
+            background-color: var(--bg-black);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+        }
+
+        .logout-btn {
+            display: inline-block;
+            text-decoration: none;
+            background-color: var(--btn-gray);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+        }
+
+        .logout-btn:hover {
+            background-color: var(--btn-gray-hover);
+        }
+
+        .logout-btn:active {
+            background-color: var(--btn-gray-pressed);
+        }
+
+        .content .actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            max-width: var(--container-lg);
+            margin-inline: auto;
+            padding-block: var(--space-lg);
+            border-bottom: 1px solid black;
+        }
+
+        @media screen and (min-width: 600px) {
+            .content .actions {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+        }
+        .date-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--gap-lg);
+            align-items: center;
+        }
+        .date-input {
+            padding: var(--space-sm);
+        }
+
+        .delays {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--space-lg);
+        }
+
+        .actions .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--gap-lg);
+            align-items: center;
+        }
+
+        .content .schedule {
+            max-width: var(--container-lg);
+            margin-inline: auto;
+        }
+
+        .schedule .date {
+            margin-bottom: 1rem;
+        }
+
+        .time-slot {
+            background-color: var(--bg-gray);
+            min-height: 100px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            padding: var(--space-md);
+            margin-bottom: 0.5rem;
+        }
+
+        .time-slot .hour {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .time-slot .location {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .student {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--gap-lg);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <span>A Company CRM 2.1</span>
+            <div class="details">
+                <span class="msgbox">0</span>
+                <span>User: Mark</span>
+                <a href="#" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </header>
+    <main class="content">
+        <div class="delays">
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=0.1">0.1</a>
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=0.2">0.2</a>
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=0.5">0.5</a>
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=1.0">1.0</a>
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=2.0">2.0</a>
+        </div>
+        <div class="actions">
+            <div class="date-selector">
+                <span>Mark's Schedule Board</span>
+                <form action="/demos/compass/scheduleboard" method="GET">
+                    <input 
+                        type="date" 
+                        value="{{ selected_date }}" 
+                        name="selected_date" 
+                        class="date-input" 
+                        onchange="this.form.submit()"
+                        />
+                    <input 
+                        type="hidden" 
+                        name="speed" 
+                        value="{{ speed }}"
+                        >
+                </form>
+                {% for button in quick_date_buttons  %}
+                    <a href="/demos/compass/scheduleboard?selected_date={{ button.strftime('%Y-%m-%d') }}&speed={{ speed }}">{{ button.strftime("%a (%dth)") }}</a>
+                {% endfor %}
+            </div>
+            <div class="links">
+                <a href="#">Barcode</a>
+                <a href="#">QR code</a>
+                <a href="#">Weekly</a>
+            </div>
+        </div>
+        <div class="schedule">
+            <h1 class="date">{{ header_date }}</h1>
+            {% for class in classes  %}
+            <div class="time-slot">
+                <div class="hour">
+                    <span>({{ class[0] }}) {{ class[1] }}</span>
+                </div>
+                <span>Datafilled</span>
+                <span>Normal session</span>
+                <div class="location">
+                    <span>Actions</span>
+                    <span>Room E</span>
+                    <span>Jinhua Branch</span>
+                </div>
+                <div>
+                    <span>Students</span>
+                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class={{ class[0] }}&speed={{ speed }}" hx-trigger="intersect">
+                        <li>Getting students</li>
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>
