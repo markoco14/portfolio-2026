@@ -7,10 +7,20 @@
     <style>
 
         :root {
+            --container-lg: 1200px;
+
             --bg-blue: #0ca3d2;
             --bg-black: black;
-            --bg-gray: #cccccc;
 
+            --btn-gray: #cccccc;
+            --btn-gray-hover: #d8d4d4;
+            --btn-gray-pressed: #a5a4a4;
+
+            --link-default: #21339c;
+            --link-hover: #2f48d8;
+            --link-pressed: #16236f;
+
+            --space-sm: 0.25rem;
             --space-md: 0.5rem;
             --space-lg: 1rem;
 
@@ -30,6 +40,17 @@
             overflow-y: scroll;
         }
 
+        a {
+            color: var(--link-default);
+        }
+        a:hover {
+            color: var(--link-hover);
+        }
+
+        a:active {
+            color: var(--link-pressed);
+        }
+
         .header {
             padding-inline: var(--space-lg);
             color: white;
@@ -38,7 +59,7 @@
 
         .header .container {
             height: 3rem;
-            max-width: 1200px;
+            max-width: var(--container-lg);
             margin-inline: auto;
             display: flex;
             justify-content: space-between;
@@ -60,10 +81,43 @@
 
         .logout-btn {
             display: inline-block;
-            color: blue;
-            background-color: var(--bg-gray);
+            text-decoration: none;
+            background-color: var(--btn-gray);
             padding: var(--space-md);
             border-radius: var(--radius-md);
+        }
+
+        .logout-btn:hover {
+            background-color: var(--btn-gray-hover);
+        }
+
+        .logout-btn:active {
+            background-color: var(--btn-gray-pressed);
+        }
+
+        .content .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: var(--container-lg);
+            margin-inline: auto;
+            padding-block: var(--space-lg);
+            border-bottom: 1px solid black;
+        }
+
+        .date-selector {
+            display: flex;
+            gap: var(--gap-lg);
+            align-items: center;
+        }
+        .date-input {
+            padding: var(--space-sm);
+        }
+
+        .actions .links {
+            display: flex;
+            gap: var(--gap-lg);
+            align-items: center;
         }
     </style>
 </head>
@@ -78,5 +132,20 @@
             </div>
         </div>
     </header>
+    <main class="content">
+        <div class="actions">
+            <div class="date-selector">
+                <span>Mark's Schedule Board</span>
+                <form action="/demos/compass/scheduleboard" method="GET">
+                    <input type="date" value="{{ date }}" name="date" class="date-input" onchange="this.form.submit()"/>
+                </form>
+            </div>
+            <div class="links">
+                <a href="#">Barcode</a>
+                <a href="#">QR code</a>
+                <a href="#">Weekly</a>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
