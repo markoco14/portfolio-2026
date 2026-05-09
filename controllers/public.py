@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import Request
 
 from config import templates
@@ -16,6 +18,20 @@ async def schedule_board(request: Request):
 
     if not date:
         date = "2026-05-10"
+
+    await asyncio.sleep(0.5)
+    
+    students_only = query_params.get("students_only")
+    if students_only:
+        students = [1, 2, 3, 4]
+        return templates.TemplateResponse(
+            request=request,
+            name="_students.html",
+            context={
+                "students": students
+            }
+        )
+
 
     return templates.TemplateResponse(
         request=request,

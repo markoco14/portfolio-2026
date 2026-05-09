@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | Mark O'Connor</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
     <style>
 
         :root {
@@ -11,6 +12,7 @@
 
             --bg-blue: #0ca3d2;
             --bg-black: black;
+            --bg-gray: #cccccc;
 
             --btn-gray: #cccccc;
             --btn-gray-hover: #d8d4d4;
@@ -96,15 +98,22 @@
         }
 
         .content .actions {
-            display: flex;
+            {# display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: center; #}
             max-width: var(--container-lg);
             margin-inline: auto;
             padding-block: var(--space-lg);
             border-bottom: 1px solid black;
         }
 
+        @media screen and (min-width: 600px) {
+            .content .actions {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
         .date-selector {
             display: flex;
             gap: var(--gap-lg);
@@ -118,6 +127,34 @@
             display: flex;
             gap: var(--gap-lg);
             align-items: center;
+        }
+
+        .content .schedule {
+            max-width: var(--container-lg);
+            margin-inline: auto;
+        }
+
+        .time-slot {
+            background-color: var(--bg-gray);
+            min-height: 100px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .time-slot .hour {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .time-slot .location {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .student {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--gap-lg);
         }
     </style>
 </head>
@@ -144,6 +181,62 @@
                 <a href="#">Barcode</a>
                 <a href="#">QR code</a>
                 <a href="#">Weekly</a>
+            </div>
+        </div>
+        <div class="schedule">
+            <div class="time-slot">
+                <div class="hour">
+                    <span>(1) 9:30</span>
+                </div>
+                <span>Datafilled</span>
+                <span>Normal session</span>
+                <div class="location">
+                    <span>Actions</span>
+                    <span>Room E</span>
+                    <span>Jinhua Branch</span>
+                </div>
+                <div>
+                    <span>Students</span>
+                    <ul hx-get="/demos/compass/scheduleboard?students_only=true" hx-trigger="load delay:500ms">
+                        <li>Getting students</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-slot">
+                <div class="hour">
+                    <span>(2) 10:30</span>
+                </div>
+                <span>Datafilled</span>
+                <span>Normal session</span>
+                <div class="location">
+                    <span>Actions</span>
+                    <span>Room E</span>
+                    <span>Jinhua Branch</span>
+                </div>
+                <div>
+                    <span>Students</span>
+                    <ul hx-get="/demos/compass/scheduleboard?students_only=true" hx-trigger="load delay:500ms">
+                        <li>Getting students</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-slot">
+                <div class="hour">
+                    <span>(3) 11:30</span>
+                </div>
+                <span>Datafilled</span>
+                <span>Normal session</span>
+                <div class="location">
+                    <span>Actions</span>
+                    <span>Room E</span>
+                    <span>Jinhua Branch</span>
+                </div>
+                <div>
+                    <span>Students</span>
+                    <ul hx-get="/demos/compass/scheduleboard?students_only=true" hx-trigger="load delay:500ms">
+                        <li>Getting students</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </main>
