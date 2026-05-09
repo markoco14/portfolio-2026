@@ -102,6 +102,10 @@
             background-color: var(--btn-gray-pressed);
         }
 
+        .content {
+            padding-inline: var(--space-lg);
+        }
+
         .content .actions {
             display: flex;
             flex-wrap: wrap;
@@ -192,6 +196,11 @@
         </div>
     </header>
     <main class="content">
+        <div 
+            hx-get="/demos/compass/scheduleboard?students_only=true&{{ class_query_string }}&speed={{ speed }}" 
+            hx-trigger="load once"
+            >
+        </div>
         <div class="delays">
             <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=0.1">0.1</a>
             <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=0.2">0.2</a>
@@ -217,7 +226,7 @@
                         >
                 </form>
                 {% for button in quick_date_buttons  %}
-                    <a href="/demos/compass/scheduleboard?selected_date={{ button.strftime('%Y-%m-%d') }}&speed={{ speed }}">{{ button.strftime("%a (%dth)") }}</a>
+                    <a href="/demos/compass/scheduleboard?selected_date={{ button.strftime('%Y-%m-%d') }}&speed={{ speed }}">{{ button.strftime("%a(%d)") }}</a>
                 {% endfor %}
             </div>
             <div class="links">
@@ -242,7 +251,7 @@
                 </div>
                 <div>
                     <span>Students</span>
-                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class={{ class[0] }}&speed={{ speed }}" hx-trigger="intersect">
+                    <ul id="students-{{ class[0] }}">
                         <li>Getting students</li>
                     </ul>
                 </div>

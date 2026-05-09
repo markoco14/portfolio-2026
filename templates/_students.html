@@ -1,7 +1,11 @@
-{% for student in students %}
-<li class="student">
-    <span>Student A</span>
-    <span>Iron</span>
-    <span>Kid</span>
-</li>
+{% for class in classes_students %}
+    <ul id="students-{{ class['class_id'] }}" hx-swap-oob="true">
+        {% for student in class["students"] %}
+        <li class="student">
+            <span>Student A</span>
+            <span>Iron</span>
+            <span>Kid</span>
+        </li>
+        {% endfor %}
+    </ul>
 {% endfor %}
