@@ -228,9 +228,10 @@
         </div>
         <div class="schedule">
             <h1 class="date">{{ header_date }}</h1>
+            {% for class in classes  %}
             <div class="time-slot">
                 <div class="hour">
-                    <span>(1) 9:30</span>
+                    <span>({{ class[0] }}) {{ class[1] }}</span>
                 </div>
                 <span>Datafilled</span>
                 <span>Normal session</span>
@@ -241,47 +242,12 @@
                 </div>
                 <div>
                     <span>Students</span>
-                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class=1&speed={{ speed }}" hx-trigger="intersect">
+                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class={{ class[0] }}&speed={{ speed }}" hx-trigger="intersect">
                         <li>Getting students</li>
                     </ul>
                 </div>
             </div>
-            <div class="time-slot">
-                <div class="hour">
-                    <span>(2) 10:30</span>
-                </div>
-                <span>Datafilled</span>
-                <span>Normal session</span>
-                <div class="location">
-                    <span>Actions</span>
-                    <span>Room E</span>
-                    <span>Jinhua Branch</span>
-                </div>
-                <div>
-                    <span>Students</span>
-                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class=2&speed={{ speed }}" hx-trigger="intersect">
-                        <li>Getting students</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="time-slot">
-                <div class="hour">
-                    <span>(3) 11:30</span>
-                </div>
-                <span>Datafilled</span>
-                <span>Normal session</span>
-                <div class="location">
-                    <span>Actions</span>
-                    <span>Room E</span>
-                    <span>Jinhua Branch</span>
-                </div>
-                <div>
-                    <span>Students</span>
-                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class=3&speed={{ speed }}" hx-trigger="intersect">
-                        <li>Getting students</li>
-                    </ul>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </main>
 </body>

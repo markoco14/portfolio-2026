@@ -52,6 +52,8 @@ async def schedule_board(request: Request):
     for i in range(1, 7):
         quick_date_buttons.append(date.fromisocalendar(selected_date.year, year_week_number, i))
 
+    classes = [(1, "9:30"), (2, "10:30"), (3, "11:30")]
+
     return templates.TemplateResponse(
         request=request,
         name="schedule-board.html",
@@ -59,6 +61,7 @@ async def schedule_board(request: Request):
             "selected_date": selected_date.strftime("%Y-%m-%d"),
             "header_date": selected_date.strftime("%A %B %d, %Y"),
             "quick_date_buttons": quick_date_buttons,
-            "speed": speed
+            "speed": speed,
+            "classes": classes
         }
     )
