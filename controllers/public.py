@@ -8,3 +8,10 @@ async def home(request: Request):
         name="index.html",
         context={}
     )
+
+async def schedule_board(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="schedule-board.html",
+        context={}
+    )

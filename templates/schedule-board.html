@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Mark O'Connor</title>
+    <style>
+
+        :root {
+            --bg-blue: #0ca3d2;
+            --bg-black: black;
+            --bg-gray: #cccccc;
+
+            --space-md: 0.5rem;
+            --space-lg: 1rem;
+
+            --radius-md: 0.5rem;
+
+            --gap-lg: 1rem;
+            
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        html {
+            overflow-y: scroll;
+        }
+
+        .header {
+            padding-inline: var(--space-lg);
+            color: white;
+            background-color: var(--bg-blue );
+        }
+
+        .header .container {
+            height: 3rem;
+            max-width: 1200px;
+            margin-inline: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header .details {
+            display: flex;
+            align-items: center;
+            gap: var(--gap-lg)
+        }
+
+        .msgbox {
+            color: white;
+            background-color: var(--bg-black);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+        }
+
+        .logout-btn {
+            display: inline-block;
+            color: blue;
+            background-color: var(--bg-gray);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <span>A Company CRM 2.1</span>
+            <div class="details">
+                <span class="msgbox">0</span>
+                <span>User: Mark</span>
+                <a href="#" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </header>
+</body>
+</html>
