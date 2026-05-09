@@ -35,13 +35,17 @@ async def schedule_board(request: Request):
     if students_only:
         await asyncio.sleep(speed)
 
-        students = [1, 2, 3, 4]
+        classes_students = [
+            {"class_id": 1, "students": [1, 2, 3, 4, 5, 6]},
+            {"class_id": 2, "students": [1, 2]},
+            {"class_id": 3, "students": [1, 2, 3]},
+            ]
 
         return templates.TemplateResponse(
             request=request,
             name="_students.html",
             context={
-                "students": students
+                "classes_students": classes_students,
             }
         )
     
@@ -53,6 +57,10 @@ async def schedule_board(request: Request):
         quick_date_buttons.append(date.fromisocalendar(selected_date.year, year_week_number, i))
 
     classes = [(1, "9:30"), (2, "10:30"), (3, "11:30")]
+    class_query_string = ""
+    for row in classes:
+        class_query_string += f"&class={row[0]}"
+        class_query_string = class_query_string.lstrip("&")
 
     return templates.TemplateResponse(
         request=request,
@@ -62,6 +70,7 @@ async def schedule_board(request: Request):
             "header_date": selected_date.strftime("%A %B %d, %Y"),
             "quick_date_buttons": quick_date_buttons,
             "speed": speed,
-            "classes": classes
+            "classes": classes,
+            "class_query_string": class_query_string
         }
     )
