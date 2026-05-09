@@ -19,6 +19,7 @@
             --btn-gray-pressed: #a5a4a4;
 
             --link-default: #21339c;
+            --link-visited: #5d219c;
             --link-hover: #2f48d8;
             --link-pressed: #16236f;
 
@@ -51,6 +52,10 @@
 
         a:active {
             color: var(--link-pressed);
+        }
+
+        a:visited {
+            color: purple;
         }
 
         .header {
@@ -98,9 +103,10 @@
         }
 
         .content .actions {
-            {# display: flex;
+            display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
-            align-items: center; #}
+            align-items: center;
             max-width: var(--container-lg);
             margin-inline: auto;
             padding-block: var(--space-lg);
@@ -112,10 +118,12 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                flex-wrap: wrap;
             }
         }
         .date-selector {
             display: flex;
+            flex-wrap: wrap;
             gap: var(--gap-lg);
             align-items: center;
         }
@@ -123,8 +131,16 @@
             padding: var(--space-sm);
         }
 
+        .delays {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--space-lg);
+        }
+
         .actions .links {
             display: flex;
+            flex-wrap: wrap;
             gap: var(--gap-lg);
             align-items: center;
         }
@@ -134,11 +150,17 @@
             margin-inline: auto;
         }
 
+        .schedule .date {
+            margin-bottom: 1rem;
+        }
+
         .time-slot {
             background-color: var(--bg-gray);
             min-height: 100px;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
+            padding: var(--space-md);
+            margin-bottom: 0.5rem;
         }
 
         .time-slot .hour {
@@ -170,12 +192,33 @@
         </div>
     </header>
     <main class="content">
+        <div class="delays">
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=0.1">0.1</a>
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=0.2">0.2</a>
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=0.5">0.5</a>
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=1.0">1.0</a>
+            <a href="/demos/compass/scheduleboard?selected_date={{ selected_date }}&speed=2.0">2.0</a>
+        </div>
         <div class="actions">
             <div class="date-selector">
                 <span>Mark's Schedule Board</span>
                 <form action="/demos/compass/scheduleboard" method="GET">
-                    <input type="date" value="{{ date }}" name="date" class="date-input" onchange="this.form.submit()"/>
+                    <input 
+                        type="date" 
+                        value="{{ selected_date }}" 
+                        name="selected_date" 
+                        class="date-input" 
+                        onchange="this.form.submit()"
+                        />
+                    <input 
+                        type="hidden" 
+                        name="speed" 
+                        value="{{ speed }}"
+                        >
                 </form>
+                {% for button in quick_date_buttons  %}
+                    <a href="/demos/compass/scheduleboard?selected_date={{ button.strftime('%Y-%m-%d') }}&speed={{ speed }}">{{ button.strftime("%a (%dth)") }}</a>
+                {% endfor %}
             </div>
             <div class="links">
                 <a href="#">Barcode</a>
@@ -184,6 +227,7 @@
             </div>
         </div>
         <div class="schedule">
+            <h1 class="date">{{ header_date }}</h1>
             <div class="time-slot">
                 <div class="hour">
                     <span>(1) 9:30</span>
@@ -197,7 +241,7 @@
                 </div>
                 <div>
                     <span>Students</span>
-                    <ul hx-get="/demos/compass/scheduleboard?students_only=true" hx-trigger="load delay:500ms">
+                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class=1&speed={{ speed }}" hx-trigger="intersect">
                         <li>Getting students</li>
                     </ul>
                 </div>
@@ -215,7 +259,7 @@
                 </div>
                 <div>
                     <span>Students</span>
-                    <ul hx-get="/demos/compass/scheduleboard?students_only=true" hx-trigger="load delay:500ms">
+                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class=2&speed={{ speed }}" hx-trigger="intersect">
                         <li>Getting students</li>
                     </ul>
                 </div>
@@ -233,7 +277,7 @@
                 </div>
                 <div>
                     <span>Students</span>
-                    <ul hx-get="/demos/compass/scheduleboard?students_only=true" hx-trigger="load delay:500ms">
+                    <ul hx-get="/demos/compass/scheduleboard?students_only=true&class=3&speed={{ speed }}" hx-trigger="intersect">
                         <li>Getting students</li>
                     </ul>
                 </div>
