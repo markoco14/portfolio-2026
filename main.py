@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from src.database import init_db
 from src.portfolio.router import router
@@ -8,6 +9,8 @@ from src.demos.router import demo_router
 app = FastAPI()
 
 init_db()
+
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
 app.include_router(router=router)
 app.include_router(router=fitness_router)

@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | Mark O'Connor</title>
+    <script src="static/vendor/htmx.min.js" defer></script>
+    <meta 
+        name="htmx-config" 
+        content='{
+                    "responseHandling":[
+                        {"code":"200", "swap": true},
+                        {"code":"422", "swap": true}
+                    ]
+                }'
+    />
     <style>
         * {
             margin: 0;
@@ -61,15 +71,25 @@
     <div class="wrapper">
         {% if not session_user %}
             <section>
-                <p>You are not signed in</p>
-                <form>
+                <p id="status"></p>
+                <form hx-post="/signin" hx-target="#status" hx-swap="outerHTML">
                     <div>
-                        <label>Email</label>
-                        <input type="text" />
+                        <label for="username">Email</label>
+                        <input
+                            id="username" 
+                            name="username" 
+                            type="text" 
+                            />
+                        <span id="email_error"></span>
                     </div>
                     <div>
-                        <label>Password</label>
-                        <input type="password" />
+                        <label for="password">Password</label>
+                        <input 
+                            id="password"
+                            name="password" 
+                            type="password" 
+                            />
+                        <span id="password_error"></span>
                     </div>
                     <button type="submit">Sign in</button>
                 </form>
