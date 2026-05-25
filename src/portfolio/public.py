@@ -3,7 +3,7 @@ from datetime import date
 
 from fastapi import Request
 
-from config import templates
+from src.config import templates
 
 async def home(request: Request):
     return templates.TemplateResponse(

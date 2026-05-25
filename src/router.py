@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from controllers import public
+from src.portfolio import public
 
 
 router = APIRouter()

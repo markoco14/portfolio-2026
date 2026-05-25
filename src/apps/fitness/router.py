@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from apps.fitness import controller
+from src.apps.fitness import controller
 
 
 fitness_router = APIRouter()

@@ -1,6 +1,6 @@
 from fastapi import Request
 
-from config import templates
+from src.config import templates
 
 def index(request: Request):
     session_user = request.cookies.get("session")
