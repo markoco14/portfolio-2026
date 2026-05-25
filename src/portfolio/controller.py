@@ -1,4 +1,7 @@
-from fastapi import Request, Response
+import time
+import uuid
+
+from fastapi import Request
 
 from src.database import get_conn
 from src.config import templates
@@ -26,7 +29,7 @@ async def signin(request: Request):
             name="_form_response.html",
             status_code=422,
             context={
-                "unprocessable_error": "Something is wrong with your email or password",
+                "general_error": "Something is wrong with your email or password",
                 "email_error": "",
                 "password_error": ""
             }
@@ -54,17 +57,26 @@ async def signin(request: Request):
             request=request,
             name="_form_response.html",
             context={
-                "unprocessable_error": "",
+                "general_error": "",
                 "email_error": email_error,
                 "password_error": password_error
             }
         )
+    
+    token = str(uuid.uuid4())
+    expires_at = int(time.time()) + (60 * 60 * 24 * 3)
 
-    return templates.TemplateResponse(
+    with get_conn() as conn:
+        conn.execute(
+            "INSERT INTO sessions (user_id, token, expires_at) VALUES (:user_id, :token, :expires_at);",
+            { "user_id": user["user_id"], "token": token, "expires_at": expires_at })
+        conn.commit()
+
+    response = templates.TemplateResponse(
         request=request,
         name="_form_response.html",
         context={
-            "unprocessable_error": "",
+            "general_error": "",
             "email_error": "",
             "password_error": ""
         },
@@ -72,3 +84,14 @@ async def signin(request: Request):
             "hx-refresh": "true"
         }
     )
+
+    response.set_cookie(
+        key="session",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="Lax",
+        max_age=(60 * 60 * 24 * 3)
+    )
+
+    return response
