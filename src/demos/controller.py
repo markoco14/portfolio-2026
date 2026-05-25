@@ -5,12 +5,6 @@ from fastapi import Request
 
 from src.config import templates
 
-async def home(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="index.html",
-        context={}
-    )
 
 
 async def schedule_board(request: Request):
@@ -43,7 +37,7 @@ async def schedule_board(request: Request):
 
         return templates.TemplateResponse(
             request=request,
-            name="_students.html",
+            name="demos/compass/_students.html",
             context={
                 "classes_students": classes_students,
             }
@@ -64,7 +58,7 @@ async def schedule_board(request: Request):
 
     return templates.TemplateResponse(
         request=request,
-        name="schedule-board.html",
+        name="demos/compass/schedule-board.html",
         context={
             "selected_date": selected_date.strftime("%Y-%m-%d"),
             "header_date": selected_date.strftime("%A %B %d, %Y"),

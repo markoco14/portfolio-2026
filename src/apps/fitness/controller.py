@@ -2,7 +2,7 @@ from fastapi import Request
 
 from src.config import templates
 
-def index(request: Request):
+async def index(request: Request):
     session_user = request.cookies.get("session")
     return templates.TemplateResponse(
         request=request,
