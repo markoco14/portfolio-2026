@@ -35,3 +35,43 @@ async def index(request: Request, session_user: Annotated[User, Depends(requires
             "runs": runs
             }
     )
+
+async def new(
+        request: Request, 
+        session_user: Annotated[User, Depends(requires_user)]
+        ):
+    return templates.TemplateResponse(
+        request=request,
+        name="fitness/new.html",
+        context={
+            "session_user": session_user,
+        }
+    )
+
+def parse_distance(value: str) -> float | None:
+    try:
+        distance = float(value)
+        if distance <= 0:
+            return None
+        return distance
+    except (ValueError, TypeError):
+        return None
+
+async def save(
+        request: Request, 
+        session_user: Annotated[User, Depends(requires_user)]
+        ):
+    form_data = await request.form()
+    form_distance = parse_distance(form_data.get("distance"))
+    form_date = form_data.get("activity_date")
+
+    if not form_distance:
+        return "Invalid distance"
+
+    with get_conn() as conn:
+        conn.execute(
+            "INSERT INTO runs (user_id, date, distance, units) VALUES (:user_id, :date, :distance, :units);",
+            {"user_id": session_user.user_id, "date": form_date, "distance": form_distance, "units": "km"})
+        conn.commit()
+
+    return "OK"

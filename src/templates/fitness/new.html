@@ -96,18 +96,26 @@
             </section>
         {% else %}
             <section>
-                <h1>Fitness</h1>
-                <p>
-                Tracking all things fitness.
-                </p>
-                <ul>
-                    {% for run in runs %}
-                    <li>{{run.activity_date.strftime("%B %d, %Y")}}: {{run.distance}} {{run.units}}</li>
-                    {% endfor %}
-                </ul>
-                <a href="/fitness/new">New run</a>
+                <h1>New Run</h1>
+                <form hx-post="/fitness">
+                    <div>
+                        <label for="distance">Distance</label>
+                        <input id="distance" type="number" name="distance" step="0.01"/>
+                    </div>
+                    <div>
+                        <label>Activity date</label>
+                        <input type="date" name="activity_date" value="{{ today }}">
+                    </div>
+                    <button type="submit">Save run</button>
+                </form>
+                <a href="/fitness">Back</a>
             </section>
         {% endif %}
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector('input[name="activity_date"]').value = new Date().toLocaleDateString('en-CA');
+        })
+    </script>
 </body>
 </html>
