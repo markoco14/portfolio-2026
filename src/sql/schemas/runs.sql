@@ -7,7 +7,8 @@ CREATE TABLE runs(
     notes TEXT,
     created_at DATETIME DEFAULT (datetime('now')),
     updated_at DATETIME,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    UNIQUE (user_id, date)
 );
 CREATE TRIGGER update_runs_updated_at
 AFTER UPDATE ON runs
