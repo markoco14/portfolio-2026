@@ -102,7 +102,7 @@
                 </p>
                 <ul>
                     {% for run in runs %}
-                    <li>{{run.date}} {{run.distance}} {{run.units}}</li>
+                    <li>{{run.activity_date.strftime("%B %d, %Y")}}: {{run.distance}} {{run.units}}</li>
                     {% endfor %}
                 </ul>
             </section>
