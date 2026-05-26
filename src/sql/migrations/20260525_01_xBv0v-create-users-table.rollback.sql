@@ -1,0 +1,3 @@
+-- Rollback create users table
+
+DROP TABLE IF EXISTS users;
