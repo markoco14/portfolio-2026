@@ -100,11 +100,15 @@
                 <p>
                 Tracking all things fitness.
                 </p>
-                <ul>
-                    {% for run in runs %}
-                    <li>{{run.activity_date.strftime("%B %d, %Y")}}: {{run.distance}} {{run.units}}</li>
-                    {% endfor %}
-                </ul>
+                {% if not runs %}
+                    <p>You haven't saved any runs.</p>
+                {% else %}
+                    <ul>
+                        {% for run in runs %}
+                        <li>{{run.activity_date.strftime("%B %d, %Y")}}: {{run.distance}} {{run.units}}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <a href="/fitness/new">New run</a>
             </section>
         {% endif %}

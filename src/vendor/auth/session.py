@@ -16,7 +16,7 @@ def is_session_active(session: Session) -> bool:
     return session.is_active == 1
 
 
-def is_session_valid(session) -> bool:
+def is_session_valid(session: Session) -> bool:
     if not session:
         return False
     if is_session_expired(session):
