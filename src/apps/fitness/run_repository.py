@@ -1,3 +1,4 @@
+from datetime import date
 import sqlite3
 from typing import List
 
@@ -36,3 +37,10 @@ def list(conn: sqlite3.Connection, user_id: int) -> List[Run]:
     ]
 
     return runs
+
+
+def save(conn: sqlite3.Connection, user_id: int, date: date, distance: float):
+    conn.execute(
+        "INSERT INTO runs (user_id, date, distance, units) VALUES (:user_id, :date, :distance, :units);",
+        {"user_id": user_id, "date": date, "distance": distance, "units": "km"})
+    conn.commit()

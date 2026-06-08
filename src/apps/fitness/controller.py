@@ -73,7 +73,8 @@ def parse_distance(value: str) -> float | None:
 
 async def save(
         request: Request, 
-        session_user: Annotated[User, Depends(requires_user)]
+        session_user: Annotated[User, Depends(requires_user)],
+        conn: Annotated[sqlite3.Connection, Depends(get_conn)]
         ):
     form_data = await request.form()
     form_distance = parse_distance(form_data.get("distance"))
@@ -82,10 +83,14 @@ async def save(
     if not form_distance:
         return "Invalid distance"
 
-    with get_conn() as conn:
-        conn.execute(
-            "INSERT INTO runs (user_id, date, distance, units) VALUES (:user_id, :date, :distance, :units);",
-            {"user_id": session_user.user_id, "date": form_date, "distance": form_distance, "units": "km"})
-        conn.commit()
+    try:
+        run_repository.save(
+            conn=conn, 
+            user_id=session_user.user_id, 
+            date=form_date, 
+            distance=form_distance
+            )
+    except Exception as e:
+        return "Error saving run, please try again."
 
     return "OK"
