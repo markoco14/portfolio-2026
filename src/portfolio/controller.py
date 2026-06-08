@@ -1,7 +1,9 @@
+import sqlite3
 import time
+from typing import Annotated
 import uuid
 
-from fastapi import Request
+from fastapi import Depends, Request
 
 from src.database import get_conn
 from src.config import templates
@@ -17,7 +19,10 @@ async def home(request: Request):
     )
 
 
-async def signin(request: Request):
+async def signin(
+        request: Request,
+        conn: Annotated[sqlite3.Connection, Depends(get_conn)]
+        ):
     form_data = await request.form()
 
     email = form_data.get("username", "").strip()
@@ -40,13 +45,16 @@ async def signin(request: Request):
     if not is_valid_email(email=email):
         email_error = "Invalid email"
     else:
-        with get_conn() as conn:
+        try:
             user = conn.execute(
                 "SELECT user_id, email, hashed_password FROM users WHERE email = :email",
                 {"email": email}
                 ).fetchone()
-        if not user:
-            email_error = "Invalid email"
+            
+            if not user:
+                email_error = "Invalid email"
+        except Exception as e:
+            return "Server error, please try again"
     
     password_error = ""
     if user and not verify_password(password=password, hashed=user["hashed_password"]):
@@ -65,13 +73,14 @@ async def signin(request: Request):
     
     token = str(uuid.uuid4())
     expires_at = int(time.time()) + (60 * 60 * 24 * 3)
-
-    with get_conn() as conn:
+    try:
         conn.execute(
             "INSERT INTO sessions (user_id, token, expires_at) VALUES (:user_id, :token, :expires_at);",
             { "user_id": user["user_id"], "token": token, "expires_at": expires_at })
         conn.commit()
-
+    except Exception as e:
+        return "Server error, please try again"
+    
     response = templates.TemplateResponse(
         request=request,
         name="_form_response.html",
