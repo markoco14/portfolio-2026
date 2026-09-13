@@ -108,6 +108,7 @@ async def new_strength(
     except Exception as e:
         return Response(status_code=500, content="Something went wrong on our end, please refresh.")
 
+
     
     return templates.TemplateResponse(
         request=request,
@@ -118,7 +119,43 @@ async def new_strength(
             }
     )
 
-async def save_strength(request: Request, session_user: Annotated[User, Depends(requires_user)]):
+async def save_strength(
+        request: Request, 
+        session_user: Annotated[User, Depends(requires_user)],
+        conn: Annotated[sqlite3.Connection, Depends(get_conn)]
+        ):
     if not session_user:
         return "Can't do that"
+    form_data = await request.form()
+
+    exercise = form_data.get("exercise", "").strip()
+    if not exercise:
+        return Response(status_code=422, content="You need to choose an exericse")
+
+
+    reps = form_data.get("reps", "").strip()
+    if not reps:
+        return Response(status_code=422, content="You need to choose how many reps")
+
+    activity_date = form_data.get("activity_date", "").strip()
+
+    try:
+        conn.execute(
+            """
+            INSERT INTO strength_log (
+                exercise_id, activity_date, reps
+            ) VALUES (
+                :exercise_id, :activity_date, :reps
+            );
+            """,
+            {
+                "exercise_id": exercise,
+                "reps": reps,
+                "activity_date": activity_date
+            }
+            )
+        conn.commit()
+    except Exception as e:
+        return Response(status_code=500, content="Something went wrong, please refresh and try again")
+    
     return "OK"

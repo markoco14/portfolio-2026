@@ -10,7 +10,8 @@
         content='{
                     "responseHandling":[
                         {"code":"200", "swap": true},
-                        {"code":"422", "swap": true}
+                        {"code":"422", "swap": true},
+                        {"code":"500", "swap": true}
                     ]
                 }'
     />
@@ -101,19 +102,19 @@
                     <p>Inputs will go here</p>
                     <div style="display: grid;">
                         <label for="exercise-select">Exercise name</label>
-                        <select name="exercise_name" id="exercise-select">
+                        <select name="exercise" id="exercise-select">
                             {% for exercise in exercises %}
                             <option value="{{ exercise.exercise_id }}">{{ exercise.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div style="display: grid;">
-                        <label>Sets</label>
-                        <input name="sets" type="text" pattern="[1-9]+"/>
-                    </div>
-                    <div style="display: grid;">
                         <label for="reps">Reps</label>
                         <input id="reps" type="text" pattern="[1-9]+" name="reps"/>
+                    </div>
+                    <div style="display: grid;">
+                        <label>Activity date</label>
+                        <input type="date" name="activity_date" value="{{ today }}">
                     </div>
                     <fieldset>
                         <legend>Units</legend>
@@ -124,14 +125,11 @@
                         <label for="weight">Weight</label>
                         <input id="weight" name="weight" type="text" pattern="[1-9]+"/>
                     </div>
-                    <div style="display: grid;">
-                        <label for="assistance">Assistance</label>
-                        <input id="assistance" name="assistance"/>
-                    </div>
-                    <div style="display: grid;">
-                        <label>Activity date</label>
-                        <input type="date" name="activity_date" value="{{ today }}">
-                    </div>
+                    <fieldset>
+                        <legend>Assistance</legend>
+                        <label for="assistance">Red band</label>
+                        <input type="radio" value="red" />
+                    </fieldset>
                     <button type="submit">Save run</button>
                 </form>
                 <a href="/fitness">Back</a>
