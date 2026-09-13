@@ -115,12 +115,12 @@
             </section>
             <section>
                 <h2>Strength Training</h2>
-                {% if not exercises %}
+                {% if not strength_log %}
                 <p>You haven't saved any strength training</p>
                 {% else %}
                 <ul>
-                    {% for entry in strength_entries %}
-                    <li>Yea!</li>
+                    {% for entry in strength_log %}
+                    <li>{{ entry.activity_date.strftime("%B %d, %Y") }} - {{ entry.name }} - {{ entry.reps }} reps</li>
                     {% endfor %}
                 </ul>
                 {% endif %}

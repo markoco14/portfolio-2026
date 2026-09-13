@@ -1,5 +1,6 @@
 from datetime import date
 import sqlite3
+from types import SimpleNamespace
 from typing import Annotated
 
 from fastapi import Depends, Request, Response
@@ -40,13 +41,31 @@ async def index(
     for run in runs:
         if run.activity_date:
             run.activity_date = date.fromisoformat(run.activity_date)
+
+    try:
+        strength_log_rows = conn.execute("SELECT * FROM strength_log JOIN exercise USING (exercise_id);").fetchall()
+    except Exception as e:
+        return templates.TemplateResponse(
+            request=request,
+            name="fitness/index.html",
+            context={
+                "session_user": session_user,
+                "runs": []
+                }
+        )
+
+    strength_log = [dict(entry) for entry in strength_log_rows]
+    for entry in strength_log:
+        if entry["activity_date"]:
+            entry["activity_date"] = date.fromisoformat(entry["activity_date"])
         
     return templates.TemplateResponse(
         request=request,
         name="fitness/index.html",
         context={
             "session_user": session_user,
-            "runs": runs
+            "runs": runs,
+            "strength_log": strength_log
             }
     )
 
@@ -127,7 +146,6 @@ async def save_strength(
     if not session_user:
         return "Can't do that"
     form_data = await request.form()
-    print(form_data)
 
     exercise = form_data.get("exercise", "").strip()
     if not exercise:
