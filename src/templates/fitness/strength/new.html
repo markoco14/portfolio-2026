@@ -99,7 +99,6 @@
             <section>
                 <h1>New Strength Entry</h1>
                 <form hx-post="/fitness/strength">
-                    <p>Inputs will go here</p>
                     <div style="display: grid;">
                         <label for="exercise-select">Exercise name</label>
                         <select name="exercise" id="exercise-select">
@@ -110,26 +109,22 @@
                     </div>
                     <div style="display: grid;">
                         <label for="reps">Reps</label>
-                        <input id="reps" type="text" pattern="[1-9]+" name="reps"/>
+                        <input id="reps" type="text" name="reps"/>
                     </div>
                     <div style="display: grid;">
                         <label>Activity date</label>
                         <input type="date" name="activity_date" value="{{ today }}">
                     </div>
-                    <fieldset>
-                        <legend>Units</legend>
-                        <label for="units">Kg</label>
-                        <input id="units" name="units" type="radio" value="kg"/>
-                    </fieldset>
                     <div style="display: grid;">
-                        <label for="weight">Weight</label>
-                        <input id="weight" name="weight" type="text" pattern="[1-9]+"/>
+                        <select name="details" hx-get="/fitness/strength/inputs/details" hx-trigger="change" hx-target="#details">
+                            <option value="none">None</option>
+                            <option value="weighted">Weighted</option>
+                            <option value="assisted">Assisted</option>
+                        </select>
                     </div>
-                    <fieldset>
-                        <legend>Assistance</legend>
-                        <label for="assistance">Red band</label>
-                        <input type="radio" value="red" />
-                    </fieldset>
+                    <div id="details">
+                        <p>No details</p>
+                    </div>
                     <button type="submit">Save run</button>
                 </form>
                 <a href="/fitness">Back</a>

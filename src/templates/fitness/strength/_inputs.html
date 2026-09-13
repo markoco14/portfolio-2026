@@ -1,0 +1,19 @@
+{% if details == "weighted" %}
+<fieldset>
+<legend>Units</legend>
+<label for="units">Kg</label>
+<input id="units" name="units" type="radio" value="kg"/>
+</fieldset>
+<div style="display: grid;">
+<label for="weight">Weight</label>
+<input id="weight" name="weight" type="text" pattern="[1-9]+"/>
+</div>
+{% elif details == "assisted"%}
+<fieldset>
+<legend>Assistance</legend>
+<label for="assistance">Red band</label>
+<input name="band" type="radio" value="red" />
+</fieldset>
+{% else %}
+<p>No details</p>
+{% endif %}

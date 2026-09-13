@@ -127,6 +127,7 @@ async def save_strength(
     if not session_user:
         return "Can't do that"
     form_data = await request.form()
+    print(form_data)
 
     exercise = form_data.get("exercise", "").strip()
     if not exercise:
@@ -138,6 +139,60 @@ async def save_strength(
         return Response(status_code=422, content="You need to choose how many reps")
 
     activity_date = form_data.get("activity_date", "").strip()
+
+    details = form_data.get("details", "").strip()
+
+    if details == "weighted":
+        units = form_data.get("units", "").strip()
+        weight = form_data.get("weight", "").strip()
+        if not units or not weight:
+            return Response(status_code=422, content="You need units and weight")
+        try:
+            conn.execute(
+                """
+                INSERT INTO strength_log (
+                    exercise_id, activity_date, reps, units, weight
+                ) VALUES (
+                    :exercise_id, :activity_date, :reps, :units, :weight
+                );
+                """,
+                {
+                    "exercise_id": exercise,
+                    "reps": reps,
+                    "activity_date": activity_date,
+                    "units": units,
+                    "weight": weight
+                }
+                )
+            conn.commit()
+        except Exception as e:
+            return Response(status_code=500, content="Something went wrong, please refresh and try again")
+        return "ok"
+    elif details == "assisted":
+        band = form_data.get("band", "").strip()
+        if not band:
+            return Response(status_code=422, content="You need a band")
+        try:
+            conn.execute(
+                """
+                INSERT INTO strength_log (
+                    exercise_id, activity_date, reps, band
+                ) VALUES (
+                    :exercise_id, :activity_date, :reps, :band
+                );
+                """,
+                {
+                    "exercise_id": exercise,
+                    "reps": reps,
+                    "activity_date": activity_date,
+                    "band": band
+                }
+                )
+            conn.commit()
+        except Exception as e:
+            return Response(status_code=500, content="Something went wrong, please refresh and try again")
+
+        return "ok"
 
     try:
         conn.execute(
@@ -159,3 +214,14 @@ async def save_strength(
         return Response(status_code=500, content="Something went wrong, please refresh and try again")
     
     return "OK"
+
+
+async def inputs(request: Request):
+    details = request.query_params.get("details")
+    return templates.TemplateResponse(
+        request=request,
+        name="fitness/strength/_inputs.html",
+        context={
+            "details": details
+        }
+    )
