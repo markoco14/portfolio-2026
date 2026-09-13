@@ -2,7 +2,7 @@ from datetime import date
 import sqlite3
 from typing import Annotated
 
-from fastapi import Depends, Request
+from fastapi import Depends, Request, Response
 
 from src.apps.fitness import run_repository
 from src.config import templates
@@ -95,14 +95,26 @@ async def save(
 
     return "OK"
 
-async def new_strength(request: Request, session_user: Annotated[User, Depends(requires_user)]):
+async def new_strength(
+        request: Request, 
+        session_user: Annotated[User, Depends(requires_user)],
+        conn: Annotated[sqlite3.Connection, Depends(get_conn)]
+        ):
     if not session_user:
         return "Can't do that"
+
+    try:
+        exercise_rows = conn.execute("SELECT * FROM exercise;").fetchall()
+    except Exception as e:
+        return Response(status_code=500, content="Something went wrong on our end, please refresh.")
+
+    
     return templates.TemplateResponse(
         request=request,
         name="fitness/strength/new.html",
         context={
-            "session_user": session_user
+            "session_user": session_user,
+            "exercises": exercise_rows
             }
     )
 

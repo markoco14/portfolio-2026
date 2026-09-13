@@ -99,14 +99,39 @@
                 <h1>New Strength Entry</h1>
                 <form hx-post="/fitness/strength">
                     <p>Inputs will go here</p>
-                    {# <div>
-                        <label for="distance">Distance</label>
-                        <input id="distance" type="number" name="distance" step="0.01"/>
+                    <div style="display: grid;">
+                        <label for="exercise-select">Exercise name</label>
+                        <select name="exercise_name" id="exercise-select">
+                            {% for exercise in exercises %}
+                            <option value="{{ exercise.exercise_id }}">{{ exercise.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div>
+                    <div style="display: grid;">
+                        <label>Sets</label>
+                        <input name="sets" type="text" pattern="[1-9]+"/>
+                    </div>
+                    <div style="display: grid;">
+                        <label for="reps">Reps</label>
+                        <input id="reps" type="text" pattern="[1-9]+" name="reps"/>
+                    </div>
+                    <fieldset>
+                        <legend>Units</legend>
+                        <label for="units">Kg</label>
+                        <input id="units" name="units" type="radio" value="kg"/>
+                    </fieldset>
+                    <div style="display: grid;">
+                        <label for="weight">Weight</label>
+                        <input id="weight" name="weight" type="text" pattern="[1-9]+"/>
+                    </div>
+                    <div style="display: grid;">
+                        <label for="assistance">Assistance</label>
+                        <input id="assistance" name="assistance"/>
+                    </div>
+                    <div style="display: grid;">
                         <label>Activity date</label>
                         <input type="date" name="activity_date" value="{{ today }}">
-                    </div> #}
+                    </div>
                     <button type="submit">Save run</button>
                 </form>
                 <a href="/fitness">Back</a>
