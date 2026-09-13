@@ -94,3 +94,19 @@ async def save(
         return "Error saving run, please try again."
 
     return "OK"
+
+async def new_strength(request: Request, session_user: Annotated[User, Depends(requires_user)]):
+    if not session_user:
+        return "Can't do that"
+    return templates.TemplateResponse(
+        request=request,
+        name="fitness/strength/new.html",
+        context={
+            "session_user": session_user
+            }
+    )
+
+async def save_strength(request: Request, session_user: Annotated[User, Depends(requires_user)]):
+    if not session_user:
+        return "Can't do that"
+    return "OK"
