@@ -8,7 +8,7 @@ CREATE TABLE strength_log(
     reps INTEGER NOT NULL,
     side TEXT CHECK (side IN ("left", "right")) DEFAULT NULL,
     units TEXT,
-    amount REAL,
+    weight REAL,
     band TEXT CHECK (band IN ("red")) DEFAULT NULL,
     created_at DATETIME DEFAULT (datetime('now')),
     updated_at DATETIME
